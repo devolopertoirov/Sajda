@@ -9,13 +9,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: ZIP faylni ochish
+      - name: Barcha ZIP fayllarni ochish
         run: |
-          ZIP=$(ls *.zip | head -n 1)
-          echo "Topildi: $ZIP"
-          unzip -q "$ZIP" -d unzipped
+          ls -la *.zip
+          mkdir unzipped
+          for z in *.zip; do unzip -q -o "$z" -d unzipped; done
           ROOT=$(dirname "$(find unzipped -name settings.gradle.kts | head -n 1)")
           echo "Loyiha papkasi: $ROOT"
+          echo "Qur'on sahifalari:"; find "$ROOT" -name "*.webp" | wc -l
           echo "ROOT=$ROOT" >> $GITHUB_ENV
 
       - uses: actions/setup-java@v4
